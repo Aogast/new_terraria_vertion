@@ -1,5 +1,6 @@
-
 import pygame, os, sys
+
+from Player import Player
 
 
 class Game:
@@ -10,7 +11,7 @@ class Game:
         self.GRAVITY = 5
         background_image_filename = 'data/Map/sheet.png'
         self.SCREEN_SIZE = (1024, 760)
-        self.screen = pygame.display.set_mode(self.SCREEN_SIZE, pygame.RESIZABLE)
+        self.screen = pygame.display.set_mode(self.SCREEN_SIZE)
         self.background = pygame.image.load(background_image_filename).convert()
 
     def play(self):
@@ -38,12 +39,14 @@ class Game:
 
     def start_screen(self):
         """This function is responsible for the start screen and for the selection of maps."""
-        back_ground = self.load_image("data/Map/Startscreen.jpg", True)
+        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.play()
+        back_ground = self.load_image("data/Map/Startscreen.png", True)
         button_size = (200, 50)
-        button_color = (0, 0, 0)
-        button_hover_color = (255, 100, 100)
-        map1_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2, 600)
-        map2_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2, 700)
+        button_color = (250, 250, 250)
+        button_hover_color = (0, 255, 100)
+        map1_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 70, 630)
+        map2_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 70, 700)
         exit_pos = (self.SCREEN_SIZE[0] - 20, 10)
         map1_button = self.make_button("Выбрать карту 1", 40, map1_pos, button_color)
         map2_button = self.make_button("Выбрать карту 2", 40, map2_pos, button_color)
@@ -57,13 +60,8 @@ class Game:
                     pygame.quit()
                     return
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if map1_button['rect'].collidepoint(event.pos):
-                        self.map = 1
-                        pygame.quit()
-                        return
-                    elif map2_button['rect'].collidepoint(event.pos):
-                        self.map = 2
-                        pygame.quit()
+                    if map1_button['rect'].collidepoint(event.pos) or map2_button['rect'].collidepoint(event.pos):
+                        self.game_loop()
                         return
                     elif exit_button['rect'].collidepoint(event.pos):
                         pygame.quit()
@@ -91,5 +89,25 @@ class Game:
             self.screen.blit(exit_button['surface'], exit_button['text_rect'])
             pygame.display.flip()
 
-    def game_loop(self, map_number: int):
+    def game_loop(self):
+        back_ground = self.load_image("data/Map/sheet.png", True)
+        self.screen.blit(back_ground, (0, 0))
+        player = Player(100, 100)
+        self.screen.blit(player.image, (player.rect.x, player.rect.y))
+        clock = pygame.time.Clock()
+        while True:
+            clock.tick(self.FPS)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_d:
+                        player.move_right()
+                        player.update_right()
+                    if event.key == pygame.K_a:
+                        player.move_left()
+                        player.update_left()
+            self.screen.blit(player.image, (player.rect.x, player.rect.y))
+            pygame.display.flip()
 
