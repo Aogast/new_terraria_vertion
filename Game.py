@@ -6,54 +6,53 @@ from Map import Map, Tile
 from Images import tile_images, load_image
 from Enemy import Zombie
 
-all_sprites = pygame.sprite.Group()
-player_group = pygame.sprite.Group()
-walls_group = pygame.sprite.Group()
-tiles_group = pygame.sprite.Group()
+all_sprites: object = pygame.sprite.Group()
+player_group: object = pygame.sprite.Group()
+walls_group: object = pygame.sprite.Group()
+tiles_group:object = pygame.sprite.Group()
 
 
 class Game:
-    def __init__(self):
-        self.FPS = 19
-        self.map = 0
-        self.clock = pygame.time.Clock()
-        self.GRAVITY = 5
-        background_image_filename = 'data/Map/sheet.png'
-        self.SCREEN_SIZE = (1024, 760)
-        self.screen = pygame.display.set_mode(self.SCREEN_SIZE)
-        self.background = pygame.image.load(background_image_filename).convert()
-        self.map = None
-        self.player = None
+    def __init__(self) -> None:
+        self.FPS: int = 19
+        self.clock: object = pygame.time.Clock()
+        self.GRAVITY: int = 5
+        background_image_filename: str = 'data/Map/sheet.png'
+        self.SCREEN_SIZE: tuple = (1024, 760)
+        self.screen: object = pygame.display.set_mode(self.SCREEN_SIZE)
+        self.background: object = pygame.image.load(background_image_filename).convert()
+        self.map: Map = None
+        self.player: Player = None
 
-    def play(self):
+    def play(self) -> None:
         pygame.init()
         self.start_screen()
 
-    def make_button(self, text: str, size: tuple, position: tuple, color: tuple):
+    def make_button(self, text: str, size: tuple, position: tuple, color: tuple) -> dict:
         """This function creates a button with the specified text, size, position and color."""
-        font = pygame.font.SysFont('Arial', size)
-        text_surf = font.render(text, True, color)
-        text_rect = text_surf.get_rect(center=position)
-        button_surf = pygame.Surface((text_rect.width + 20, text_rect.height + 10), pygame.SRCALPHA)
+        font: object = pygame.font.SysFont('Arial', size)
+        text_surf: object = font.render(text, True, color)
+        text_rect: object = text_surf.get_rect(center=position)
+        button_surf: object = pygame.Surface((text_rect.width + 20, text_rect.height + 10), pygame.SRCALPHA)
         button_surf.fill((0, 0, 0, 0))
         button_surf.blit(text_surf, (10, 5))
-        button_rect = button_surf.get_rect(center=position)
+        button_rect: object = button_surf.get_rect(center=position)
         return {'surface': button_surf, 'text_rect': text_rect, 'rect': button_rect}
 
-    def start_screen(self):
+    def start_screen(self) -> None:
         """This function is responsible for the start screen and for the selection of maps."""
         pygame.mixer.music.load('music.mp3')
         pygame.mixer.music.play()
-        back_ground = load_image("data/Map/Startscreen.jpg", True)
-        button_size = (200, 50)
-        button_color = (250, 250, 250)
-        button_hover_color = (117, 250, 97)
-        map1_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 100, 660)
-        map2_pos = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 100, 720)
-        exit_pos = (self.SCREEN_SIZE[0] - 20, 10)
-        map1_button = self.make_button("Выбрать карту 1", 40, map1_pos, button_color)
-        map2_button = self.make_button("Выбрать карту 2", 40, map2_pos, button_color)
-        exit_button = self.make_button("X", 40, exit_pos, button_color)
+        back_ground: object = load_image("data/Map/Startscreen.jpg", True)
+        button_size: tuple = (200, 50)
+        button_color: tuple = (250, 250, 250)
+        button_hover_color: tuple = (117, 250, 97)
+        map1_pos: tuple = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 100, 660)
+        map2_pos: tuple = (self.SCREEN_SIZE[0] / 2 - button_size[0] / 2 + 100, 720)
+        exit_pos: tuple = (self.SCREEN_SIZE[0] - 20, 10)
+        map1_button: object = self.make_button("Выбрать карту 1", 40, map1_pos, button_color)
+        map2_button: object = self.make_button("Выбрать карту 2", 40, map2_pos, button_color)
+        exit_button: object = self.make_button("X", 40, exit_pos, button_color)
 
         while True:
             self.screen.blit(back_ground, (0, 0))
@@ -75,7 +74,7 @@ class Game:
                         pygame.quit()
                         return
 
-            mouse_pos = pygame.mouse.get_pos()
+            mouse_pos: object = pygame.mouse.get_pos()
             if map1_button['rect'].collidepoint(mouse_pos):
                 map1_button = self.make_button("Выбрать карту 1", 40, map1_pos, button_hover_color)
             else:
@@ -97,42 +96,35 @@ class Game:
             self.screen.blit(exit_button['surface'], exit_button['text_rect'])
             pygame.display.flip()
 
-    def update_frames(self):
-        player_info = [self.player.rect.x, self.player.rect.y,
-                       self.player.cur_frame_left, self.player.cur_frame_right]
-
-    def fisrt_map_creation(self):
+    def fisrt_map_creation(self) -> None:
         for y in range(len(self.map.map)):
             for x in range(len(self.map.map[y])):
                 if self.map.map[y][x] in tile_images.keys():
                     Tile(self.map.map[y][x], x, y, x, y, tiles_group, all_sprites)
 
-    def update_sprites(self):
-        pass
-
-    def game_loop(self):
-        back_ground_day = load_image("data/Map/sheet.png", True)
-        back_ground_night = load_image("data/Map/night.png", True)
-        left_sword = load_image("data/Player/left_sword.png")
-        right_sword = load_image("data/Player/sword.png")
+    def game_loop(self) -> None:
+        back_ground_day: pygame.Surface = load_image("data/Map/sheet.png", True)
+        back_ground_night: pygame.Surface = load_image("data/Map/night.png", True)
+        left_sword: pygame.Surface = load_image("data/Player/left_sword.png")
+        right_sword: pygame.Surface = load_image("data/Player/sword.png")
         self.screen.blit(back_ground_day, (0, 0))
         self.player = Player(1000, 100, player_group, all_sprites)
         self.fisrt_map_creation()
         self.screen.blit(self.player.image, (self.player.rect.x, self.player.rect.y))
-        sword_time = 0
-        zombie_time = 0
-        is_zombie = False
-        is_sword = False
-        zombie = None
-        clock = pygame.time.Clock()
-        time = 28800
-        key_down_flag = False
-        key_type = None
-        camera = Camera()
-        enemy_group = pygame.sprite.Group()
+        sword_time: int = 0
+        zombie_time: int = 0
+        is_zombie: bool = False
+        is_sword: bool = False
+        zombie: Zombie = None
+        clock: object = pygame.time.Clock()
+        time: int = 28800
+        key_down_flag: bool = False
+        key_type: object = None
+        camera: Camera = Camera()
+        enemy_group: object = pygame.sprite.Group()
         while True:
-            sword_group = pygame.sprite.Group()
-            inventory_group = pygame.sprite.Group()
+            sword_group: object = pygame.sprite.Group()
+            inventory_group: object = pygame.sprite.Group()
             time += 10
             zombie_time += 1
             zombie_time %= 1000

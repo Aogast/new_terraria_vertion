@@ -1,9 +1,9 @@
 import pygame
 
 
-def load_image(name, colorkey=False):
+def load_image(name, colorkey=False) -> pygame.Surface:
     """This function allows you to load images from the data folder."""
-    image = pygame.image.load(name)
+    image: pygame.Surface = pygame.image.load(name)
     if colorkey:
         image = pygame.transform.scale(image, SCREEN_SIZE)
     # image = image.convert_alpha()
