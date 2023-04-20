@@ -173,7 +173,7 @@ class Game:
                             tiles_group.remove(sprite)
                             all_sprites.remove(sprite)
                             break
-                    if self.player.inventory_index != 0:
+                    if self.player.inventory_index != 0 and flag == False:
                         mouse_cords = list(pygame.mouse.get_pos())
                         first_var = mouse_cords.copy()
                         second_var = mouse_cords.copy()
