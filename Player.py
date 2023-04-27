@@ -14,6 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.jump_power = 25
         self.is_jump = False
         self.speed = 5
+        self.damage = 10
         self.frames_right = [pygame.image.load("data/Player/right_player.png"),
                              pygame.image.load("data/Player/right2.png"),
                              pygame.image.load("data/Player/right3.png"),
@@ -92,5 +93,17 @@ class Sword(pygame.sprite.Sprite):
 
     def __init__(self, image, pos_x, pos_y, sword_group):
         super().__init__(sword_group)
-        self.image = pygame.transform.scale(image, (40, 40))
+        self.image = pygame.transform.scale(image, (30, 30))
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+
+
+class Health(pygame.sprite.Sprite):
+    """Player health class"""
+
+    def __init__(self,pos_x, pos_y, health_group, f=False):
+        super().__init__(health_group)
+        if f:
+            self.image = pygame.transform.scale(tile_images["heart"], (30, 30))
+        else:
+            self.image = pygame.transform.scale(tile_images["full_heart"], (30, 30))
         self.rect = self.image.get_rect().move(pos_x, pos_y)

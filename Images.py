@@ -20,7 +20,12 @@ tile_images = {'#': pygame.transform.scale(load_image('data/Map/ground.png'), (t
                '/': pygame.transform.scale(load_image('data/Map/trunk.png'), (tile_width, tile_height)),
                '^': pygame.transform.scale(load_image('data/Map/sand.jpg'), (tile_width, tile_height)),
                '$': pygame.transform.scale(load_image('data/Map/snow.png'), (tile_width, tile_height)),
+               '!': pygame.transform.scale(load_image('data/Map/boost.png'), (tile_width, tile_height)),
                'sword_left': load_image('data/Player/left_sword.png'),
-               'sword': load_image('data/Player/sword.png')}
+               'sword': load_image('data/Player/sword.png'),
+               "heart": pygame.transform.scale(load_image('data/Player/heart.png'), (tile_width, tile_height)),
+               "full_heart": pygame.transform.scale(load_image('data/Player/fullheart.png'), (tile_width, tile_height))}
+
+
 
 

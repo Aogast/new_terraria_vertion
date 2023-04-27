@@ -11,7 +11,7 @@ class Zombie(pygame.sprite.Sprite):
         self.current_item_index = 0
         self.jump_power = 25
         self.is_jump = False
-        self.speed = 5
+        self.speed = 3
         self.frames_right = [pygame.image.load("data/Enemy/zombie_right_1.png"),
                              pygame.image.load("data/Enemy/zombie_right_2.png"),
                              pygame.image.load("data/Enemy/zombie_right_3.png")]
