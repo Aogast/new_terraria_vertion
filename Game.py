@@ -41,7 +41,7 @@ class Game:
 
     def start_screen(self) -> None:
         """This function is responsible for the start screen and for the selection of maps."""
-        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.load('source/music.mp3')
         pygame.mixer.music.play()
         back_ground: object = load_image("data/Map/Startscreen.jpg", True)
         button_size: tuple = (200, 50)
